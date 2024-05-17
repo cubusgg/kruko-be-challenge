@@ -1,13 +1,12 @@
 # Fix and refactor the following controller
 class MyController < ApplicationController
   def options
-    options = {}
-    available_option_keys = [:first_option, :second_option, :third_option]
-    all_keys = params.keys.map(&:to_sym)
-    set_option_keys = all_keys & available_option_keys
-    set_option_keys.each do |key|
-      options[key] = params[key]
-    end
-    options
+    Hash[*permitted_params]
+  end
+
+  private
+
+  def permitted_params
+    params.require(:first_option, :second_option, :third_option).permit!
   end
 end
